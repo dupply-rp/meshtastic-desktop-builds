@@ -47,6 +47,12 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-24.04]
     steps:
+      # O nome deste repositorio deixa o caminho da pasta de trabalho mais longo que o do
+      # oficial, e alguns arquivos de teste passam do limite de 260 caracteres do Windows.
+      - name: Liberar caminhos longos no git (Windows)
+        if: runner.os == 'Windows'
+        run: git config --system core.longpaths true
+
       # Baixa o codigo OFICIAL na tag, sem alteracoes
       - name: Checkout do codigo oficial
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
