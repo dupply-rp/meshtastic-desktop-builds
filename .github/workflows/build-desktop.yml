@@ -128,6 +128,9 @@ jobs:
         run: |
           find dist -mindepth 2 -type f -exec mv -t dist {} +
           find dist -mindepth 1 -type d -empty -delete
+          # O GitHub troca espacos por pontos no nome dos anexos; renomear antes
+          # para o SHA256SUMS.txt bater com os nomes publicados.
+          for f in dist/*\ *; do [ -e "$f" ] && mv "$f" "${f// /.}"; done
           ls -la dist
           for ext in dmg msi exe deb rpm AppImage; do
             ls dist/*."$ext" >/dev/null 2>&1 || { echo "::error::Faltou o .$ext"; exit 1; }
