@@ -1,7 +1,7 @@
 # Compila o Meshtastic Desktop a partir do codigo OFICIAL, sem alteracoes.
 # Referencia: job `release-desktop` de meshtastic/Meshtastic-Android/.github/workflows/release.yml
 # (conferido na tag v2.8.4). Diferencas: sem assinatura, sem Linux ARM, sem uber jar e sem atestado.
-name: Build Meshtastic Desktop
+name: Compilar Meshtastic Desktop
 
 on:
   workflow_dispatch:

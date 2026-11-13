@@ -25,10 +25,10 @@ Cada release traz também `SHA256SUMS.txt` para conferência dos arquivos.
 
 1. Ver a última release de produção em <https://github.com/meshtastic/Meshtastic-Android/releases>
    (ignorar `snapshot` e tags `-internal.N`).
-2. Em **Actions → Build Meshtastic Desktop → Run workflow**, informar:
+2. Em **Actions → Compilar Meshtastic Desktop → Run workflow (botão do GitHub)**, informar:
    - `tag_name`: por exemplo `v2.8.4`
    - `version_name`: por exemplo `2.8.4`
-3. Aguardar os jobs (macOS, Windows, Linux). A release `desktop-<tag>` é criada com os instaladores.
+3. Aguardar as 3 compilações (macOS, Windows, Linux). A release `desktop-<tag>` é criada com os instaladores.
 
 Pela linha de comando:
 
