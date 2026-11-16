@@ -155,3 +155,11 @@ jobs:
             gh release create "$TAG" dist/* --repo "$REPO" --target "${GITHUB_SHA}" \
               --title "Meshtastic Desktop ${VERSION}" --notes "$notes"
           fi
+
+  pages:
+    needs: release
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/pages.yml

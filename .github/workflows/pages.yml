@@ -1,0 +1,46 @@
+# Publica a Central de instalacao (site/) no GitHub Pages, com os links da release mais recente.
+# Roda sozinho no fim do build-desktop.yml e pode ser disparado manualmente.
+name: Publicar central de instalacao
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Gerar release.json da release mais recente
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/releases/latest" > latest.json
+          jq '{
+                version: (.tag_name | sub("^desktop-v"; "")),
+                published: .published_at,
+                page: .html_url,
+                guide: ([.assets[] | select(.name | test("(?i)guia.*\\.pdf$")) | .browser_download_url] | first),
+                assets: [.assets[] | {name, size, url: .browser_download_url}]
+              }' latest.json > site/release.json
+          cat site/release.json
+
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
